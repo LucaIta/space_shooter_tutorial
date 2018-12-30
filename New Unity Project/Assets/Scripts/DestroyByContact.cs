@@ -6,6 +6,17 @@ public class DestroyByContact : MonoBehaviour {
 
     public GameObject explosion;
     public GameObject playerExplosion;
+    public int scoreValue;
+    private GameController gameController;
+
+    void Start() {
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null) {
+            gameController = gameControllerObject.GetComponent <GameController>();
+        } else {
+            Debug.Log("cannot finf 'gameController script' ");
+        }
+    }
 
     // Destroy everything that enters the trigger
     void OnTriggerEnter(Collider other)
@@ -18,6 +29,7 @@ public class DestroyByContact : MonoBehaviour {
             Destroy(other.gameObject);
 	        // destroy the asteroid itself
 	        Destroy(gameObject);
+            gameController.incrementScore(scoreValue);
             if (other.tag == "Player") {
                 Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
             }
